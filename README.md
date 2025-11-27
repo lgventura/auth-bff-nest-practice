@@ -54,21 +54,23 @@ Perfect for developers learning NestJS or exploring BFF architecture patterns.
 
 The project follows a **modular architecture** with clear separation of concerns:
 
-\`\`\`
+```
 Application Entry (main.ts)
-↓
-App Module
-↓
-├── Auth Module (Authentication & Authorization)
-│ ├── Login & Token Generation
-│ ├── Token Validation
-│ └── JWT Strategy & Guards
-│
-└── Profile Module (User Management)
-├── Profile CRUD Operations
-├── Admin-only Features
-└── User Data Management
-\`\`\`
+         ↓
+    App Module
+         ↓
+    ┌────┴────┐
+    │         │
+Auth Module   Profile Module
+    │         │
+    ├─ Login & Token Generation
+    ├─ Token Validation
+    └─ JWT Strategy & Guards
+              │
+              ├─ Profile CRUD Operations
+              ├─ Admin-only Features
+              └─ User Data Management
+```
 
 ### Authentication Flow
 
@@ -82,74 +84,74 @@ App Module
 
 ### Data Storage
 
-Users are stored in a JSON file (\`src/data/users.json\`) with the following structure:
+Users are stored in a JSON file (`src/data/users.json`) with the following structure:
 
-\`\`\`json
+```json
 {
-"id": "1",
-"username": "admin",
-"password": "$2b$10$...",
-"email": "admin@example.com",
-"role": "admin"
+  "id": "1",
+  "username": "admin",
+  "password": "$2b$10$...",
+  "email": "admin@example.com",
+  "role": "admin"
 }
-\`\`\`
+```
 
 Passwords are hashed using bcrypt for security.
 
 ## Project Structure
 
-\`\`\`
+```
 auth-bff/
 ├── src/
-│ ├── modules/
-│ │ ├── auth/ # Authentication Module
-│ │ │ ├── dto/ # Data Transfer Objects
-│ │ │ ├── guards/ # Authentication Guards
-│ │ │ ├── strategies/ # Passport Strategies
-│ │ │ ├── interfaces/ # TypeScript Interfaces
-│ │ │ ├── auth.controller.ts # Route Handlers
-│ │ │ ├── auth.service.ts # Business Logic
-│ │ │ └── auth.module.ts # Module Configuration
-│ │ │
-│ │ └── profile/ # Profile Management Module
-│ │ ├── dto/ # Data Transfer Objects
-│ │ ├── interfaces/ # TypeScript Interfaces
-│ │ ├── profile.controller.ts # Route Handlers
-│ │ ├── profile.service.ts # Business Logic
-│ │ └── profile.module.ts # Module Configuration
-│ │
-│ ├── data/
-│ │ └── users.json # User Database (JSON)
-│ ├── app.module.ts # Root Module
-│ └── main.ts # Application Entry Point
+│   ├── modules/
+│   │   ├── auth/                    # Authentication Module
+│   │   │   ├── dto/                 # Data Transfer Objects
+│   │   │   ├── guards/              # Authentication Guards
+│   │   │   ├── strategies/          # Passport Strategies
+│   │   │   ├── interfaces/          # TypeScript Interfaces
+│   │   │   ├── auth.controller.ts   # Route Handlers
+│   │   │   ├── auth.service.ts      # Business Logic
+│   │   │   └── auth.module.ts       # Module Configuration
+│   │   │
+│   │   └── profile/                 # Profile Management Module
+│   │       ├── dto/                 # Data Transfer Objects
+│   │       ├── interfaces/          # TypeScript Interfaces
+│   │       ├── profile.controller.ts # Route Handlers
+│   │       ├── profile.service.ts   # Business Logic
+│   │       └── profile.module.ts    # Module Configuration
+│   │
+│   ├── data/
+│   │   └── users.json               # User Database (JSON)
+│   ├── app.module.ts                # Root Module
+│   └── main.ts                      # Application Entry Point
 │
 ├── scripts/
-│ └── generate-hash.js # Password Hash Generator
-├── .env # Environment Variables
-├── nest-cli.json # NestJS CLI Configuration
-├── tsconfig.json # TypeScript Configuration
-└── package.json # Dependencies & Scripts
-\`\`\`
+│   └── generate-hash.js             # Password Hash Generator
+├── .env                             # Environment Variables
+├── nest-cli.json                    # NestJS CLI Configuration
+├── tsconfig.json                    # TypeScript Configuration
+└── package.json                     # Dependencies & Scripts
+```
 
 ## Available Routes
 
 ### Authentication Routes
 
-| Method | Endpoint           | Description                     | Auth Required |
-| ------ | ------------------ | ------------------------------- | ------------- |
-| POST   | \`/auth/login\`    | User login and token generation | No            |
-| POST   | \`/auth/validate\` | Validate JWT token              | No            |
-| GET    | \`/auth/me\`       | Get authenticated user info     | Yes           |
-| GET    | \`/auth/health\`   | Service health check            | No            |
+| Method | Endpoint         | Description                     | Auth Required |
+| ------ | ---------------- | ------------------------------- | ------------- |
+| POST   | `/auth/login`    | User login and token generation | No            |
+| POST   | `/auth/validate` | Validate JWT token              | No            |
+| GET    | `/auth/me`       | Get authenticated user info     | Yes           |
+| GET    | `/auth/health`   | Service health check            | No            |
 
 ### Profile Routes
 
-| Method | Endpoint              | Description                          | Auth Required | Admin Only |
-| ------ | --------------------- | ------------------------------------ | ------------- | ---------- |
-| GET    | \`/profile\`          | Get user profile                     | Yes           | No         |
-| GET    | \`/profile/detailed\` | Get detailed profile with timestamps | Yes           | No         |
-| PUT    | \`/profile\`          | Update user profile                  | Yes           | No         |
-| GET    | \`/profile/all\`      | List all users                       | Yes           | Yes        |
+| Method | Endpoint            | Description                          | Auth Required | Admin Only |
+| ------ | ------------------- | ------------------------------------ | ------------- | ---------- |
+| GET    | `/profile`          | Get user profile                     | Yes           | No         |
+| GET    | `/profile/detailed` | Get detailed profile with timestamps | Yes           | No         |
+| PUT    | `/profile`          | Update user profile                  | Yes           | No         |
+| GET    | `/profile/all`      | List all users                       | Yes           | Yes        |
 
 ## Getting Started
 
@@ -161,38 +163,43 @@ auth-bff/
 ### Installation
 
 1. **Navigate to project directory**:
-   \`\`\`bash
+
+   ```bash
    cd auth-bff
-   \`\`\`
+   ```
 
 2. **Install dependencies**:
-   \`\`\`bash
+
+   ```bash
    npm install
-   \`\`\`
+   ```
 
 3. **Configure environment variables**:
 
-   Edit the \`.env\` file:
-   \`\`\`env
+   Edit the `.env` file:
+
+   ```env
    PORT=3000
    JWT_SECRET=your-super-secret-key-change-in-production
    JWT_EXPIRES_IN=1h
-   \`\`\`
+   ```
 
 ### Running the Application
 
 **Development mode**:
-\`\`\`bash
+
+```bash
 npm run start:dev
-\`\`\`
+```
 
 **Production mode**:
-\`\`\`bash
+
+```bash
 npm run build
 npm run start:prod
-\`\`\`
+```
 
-Application will be available at: \`http://localhost:3000\`
+Application will be available at: `http://localhost:3000`
 
 ## Test Users
 
@@ -205,59 +212,61 @@ Application will be available at: \`http://localhost:3000\`
 
 ### 1. Login
 
-\`\`\`bash
-curl -X POST http://localhost:3000/auth/login \\
--H "Content-Type: application/json" \\
--d '{"username":"admin","password":"admin123"}'
-\`\`\`
+```bash
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"admin123"}'
+```
 
 **Response**:
-\`\`\`json
+
+```json
 {
-"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-"token_type": "Bearer",
-"expires_in": "1h",
-"user": {
-"id": "1",
-"username": "admin",
-"email": "admin@example.com",
-"role": "admin"
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "Bearer",
+  "expires_in": "1h",
+  "user": {
+    "id": "1",
+    "username": "admin",
+    "email": "admin@example.com",
+    "role": "admin"
+  }
 }
-}
-\`\`\`
+```
 
 ### 2. Get Profile
 
-\`\`\`bash
-curl -X GET http://localhost:3000/profile \\
--H "Authorization: Bearer YOUR_TOKEN"
-\`\`\`
+```bash
+curl -X GET http://localhost:3000/profile \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
 
 **Response**:
-\`\`\`json
+
+```json
 {
-"id": "1",
-"username": "admin",
-"email": "admin@example.com",
-"role": "admin"
+  "id": "1",
+  "username": "admin",
+  "email": "admin@example.com",
+  "role": "admin"
 }
-\`\`\`
+```
 
 ### 3. Update Profile
 
-\`\`\`bash
-curl -X PUT http://localhost:3000/profile \\
--H "Authorization: Bearer YOUR_TOKEN" \\
--H "Content-Type: application/json" \\
--d '{"email":"newemail@example.com"}'
-\`\`\`
+```bash
+curl -X PUT http://localhost:3000/profile \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"newemail@example.com"}'
+```
 
 ### 4. List All Users (Admin Only)
 
-\`\`\`bash
-curl -X GET http://localhost:3000/profile/all \\
--H "Authorization: Bearer YOUR_TOKEN"
-\`\`\`
+```bash
+curl -X GET http://localhost:3000/profile/all \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
 
 ## Security Features
 
@@ -270,13 +279,13 @@ curl -X GET http://localhost:3000/profile/all \\
 
 ## Project Scripts
 
-\`\`\`bash
-npm run start # Start application
-npm run start:dev # Start in development mode with hot-reload
-npm run start:prod # Start in production mode
-npm run build # Build the project
-npm run generate-hash # Generate bcrypt hash for new passwords
-\`\`\`
+```bash
+npm run start          # Start application
+npm run start:dev      # Start in development mode with hot-reload
+npm run start:prod     # Start in production mode
+npm run build          # Build the project
+npm run generate-hash  # Generate bcrypt hash for new passwords
+```
 
 ## Learning Outcomes
 
